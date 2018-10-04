@@ -15,6 +15,7 @@
 // Author: Mike McCauley
 // Copyright (C) 2011 Mike McCauley
 // $Id: RF22.h,v 1.21 2012/05/30 01:51:25 mikem Exp $
+
 #include <bcm2835.h>
 #include <stdio.h>
 // Blinks on RPi Plug P1 pin 11 (which is GPIO pin 17)
@@ -29,13 +30,14 @@ int main(int argc, char **argv)
     // Set the pin to be an output
     bcm2835_gpio_fsel(PIN, BCM2835_GPIO_FSEL_OUTP);
     // Blink
-    while (1)
+int i;    
+for (i=0; i<10; i++)
     {
         // Turn it on
         bcm2835_gpio_write(PIN, HIGH);
         
         // wait a bit
-        bcm2835_delay(500);
+        bcm2835_delay(50);
         
         // turn it off
         bcm2835_gpio_write(PIN, LOW);
