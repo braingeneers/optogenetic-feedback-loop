@@ -18,7 +18,7 @@ int main (void)
 
 // Pin base 100 for 10 pins.
 //    Use wiringPi pins 0, 1 & 2 for data, clock and latch
-  sr595Setup (100, 10, 0, 1, 2) ;
+  sr595Setup (100, 10, 27, 28, 29) ;
 
   printf ("Raspberry Pi - Shift Register Test\n") ;
 
@@ -28,7 +28,7 @@ int main (void)
     {
       for (bit = 0 ; bit < 10 ; ++bit)
         digitalWrite (100 + bit, i & (1 << bit)) ;
-      delay (5) ;
+        delay (5) ;
     }
   }
   return 0 ;
