@@ -15,8 +15,8 @@ using namespace std;
 
 
 void pulse(int pin){
-	bcm2835_gpio_write(pin, HIGH);
 	bcm2835_gpio_write(pin, LOW);
+	bcm2835_gpio_write(pin, HIGH);
 	//digitalWrite(pin, 0);
 	//digitalWrite(pin, 1);
 }
