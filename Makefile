@@ -4,8 +4,8 @@ CC = g++ -std=c++17
 #CNFLAGS = -Wall -lbcm2835 #-lwiringPi
 
 
-ARRAY_SRC=$(wildcard src/array/*.c)
-MASTER_SRC=$(wildcard src/master/*.c)
+ARRAY_SRC=$(wildcard src/array/*.c /src/protocol.h)
+MASTER_SRC=$(wildcard src/master/*.c /src/protocol.h /src/array/leddriver.h)
 
 all: array master
 

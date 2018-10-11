@@ -1,3 +1,10 @@
+//-----------------------------------------------------------------------------
+// Kateryna Voitiuk (kvoitiuk@ucsc.edu)
+// Braingeneers
+// leddriver.c
+// Description: Driver for LED array using parallel shift registers
+//-----------------------------------------------------------------------------
+
 #include "leddriver.h"
 
 
@@ -6,14 +13,14 @@ void pulse(int pin){
 	bcm2835_gpio_write(pin, HIGH);
 }
 
-void shiftin(bool *array){
+void shiftin(bool *pattern){
 	int i;
 	bool out;
 
 	for(i=0;i<ARRAY_SIZE;i++){
 		//out = (byte & (LED_MASK >> i)) > 0;
 
-		out = array[i];
+		out = pattern[i];
 		printf("out: %d, %x\n", out, out);
 		bcm2835_gpio_write(SDI, out);
 		pulse(SRCLK);
@@ -33,9 +40,9 @@ void init(void){
 				bcm2835_gpio_write(SRCLK, LOW);
 
 				//shift zeroes into the chip to clear the array
-				bool array[ARRAY_SIZE] = {0};
-        shiftin(array);
+				bool pattern[ARRAY_SIZE] = {0};
+        shiftin(pattern);
         pulse(RCLK);
-        delay(50);
+        delay(25);
 
 }

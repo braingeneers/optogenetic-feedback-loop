@@ -1,4 +1,11 @@
-#include "leddriver.h"
+//-----------------------------------------------------------------------------
+// Kateryna Voitiuk (kvoitiuk@ucsc.edu)
+// Braingeneers
+// array.c
+// Description: Implementation of array hardware control and communication
+//-----------------------------------------------------------------------------
+
+
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -11,88 +18,70 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#include "leddriver.h"
+#include "../protocol.h"
+
 using namespace std;
 
-void print(std::vector<unsigned int> &bucket){
-    for(unsigned int &num : bucket){ std::cout << num << " "; }
-    std::cout << std::endl;
-}
 
-int main(void) {
-
-        if(!bcm2835_init()) return 1;
-
-        bool array[24] = {0};
-        int i;
-        while(1){
-                int pattern; // pattern = rand() & rand();
-                cout <<  "What array configuration?" << endl;
-                cin >> pattern;
-                for(i=0;i<ARRAY_SIZE;i++)
-                    array[i] = (pattern & (LED_MASK >> i)) > 0;
-
-                cout << endl;
-
-                shiftin(array);
-                pulse(RCLK);
-                delay(25);
-        }
-
-        bcm2835_close();
-        return 0;
-}
-/*
 int main(int argc, char *argv[]) {
-  std::vector<std::vector<unsigned int> > lists;
-  std::vector<unsigned int> list1 = {1, 2345, 4567, 45643, 123, 789765, 2345, 7};
-  std::vector<unsigned int> list2 = {2, 34554, 4541, 2345, 4567, 45643, 123, 789765, 2345, 8};
-  lists.push_back(list1); lists.push_back(list2);
-
-
-  int port = atoi(argv[2]);
+  if(!bcm2835_init()) return 1;
+  int port = atoi(argv[1]);
 
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd < 0) exit(-1);
 
-  struct hostent *server = gethostbyname(argv[1]);
-  if (server == NULL) exit(-1);
+  struct sockaddr_in server_addr;
+  bzero((char *) &server_addr, sizeof(server_addr));
+  server_addr.sin_family = AF_INET;
+  server_addr.sin_addr.s_addr = INADDR_ANY;
+  server_addr.sin_port = htons(port);
+
+  if (bind(sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) exit(-1);
 
   struct sockaddr_in remote_addr;
-  bzero((char *) &remote_addr, sizeof(remote_addr));
-  remote_addr.sin_family = AF_INET;
-  bcopy((char *)server->h_addr, (char *)&remote_addr.sin_addr.s_addr, server->h_length);
-  remote_addr.sin_port = htons(port);
-
   socklen_t len = sizeof(remote_addr);
 
-  //unsigned int num  = atoi(argv[3]);
-  const unsigned int terminate = 0;
-  for(std::vector<unsigned int> &list : lists){
-    //std::cout << "New List: ";
-    //print(list);
+        //unsigned int num  = atoi(argv[3]);
+      //  const unsigned int terminate = 0;
 
-    //send list to server
-      for(unsigned int &num : list){
-          int n = sendto(sockfd, &num, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr,len);
+        //send list to server
+      //  for(unsigned int &num : list){
+      //        int n = sendto(sockfd, &num, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr,len);
+      //        if (n < 0) exit(-1);
+      //  }
+
+        //end list transmission
+        //int n = sendto(sockfd, &terminate, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr,len);
+        //if (n < 0) exit(-1);
+
+        //recieve sorted list
+        Message msg;
+        int n;
+
+
+      //  for (unsigned int &num : list){
+          //  unsigned int buffer; //char buffer[256];
+            //buffer = 0; //bzero(buffer,256);
+        do{
+          n = recvfrom(sockfd, &msg, sizeof(msg), 0,(struct sockaddr *)&remote_addr, &len);
           if (n < 0) exit(-1);
-      }
-      //end list transmission
-      int n = sendto(sockfd, &terminate, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr,len);
-      if (n < 0) exit(-1);
+          cout << "Recieved the pattern: ";
+          for(int i; i<ARRAY_SIZE; i++){ cout << msg.pattern[i] << " "; }
+          std::cout << std::endl;
 
-      //recieve sorted list
-      for (unsigned int &num : list){
-        //  unsigned int buffer; //char buffer[256];
-          //buffer = 0; //bzero(buffer,256);
-          n = recvfrom(sockfd, &num, sizeof(unsigned int), 0,(struct sockaddr *)&remote_addr, &len);
-          if (n < 0) exit(-1);
-      }
 
-      //printf("Received list:");
-      //print(list);
-  }
+          shiftin(msg.pattern);
+          pulse(RCLK);
+          delay(25);
 
-  close(sockfd);
+        } while (msg.flag != LAST);
+
+
+        close(sockfd);
+
+        bcm2835_close();
+        return 0;
+
 
 }
-*/
