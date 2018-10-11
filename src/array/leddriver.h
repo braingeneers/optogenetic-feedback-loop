@@ -13,15 +13,13 @@
 //unsigned char LED[8] = {0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
 
 
-#define LEDS 24 //leds per organoid
+#define ARRAY_SIZE 24 //leds per array
 #define LED_MASK 0x800000
-
 
 
 void pulse(int pin);
 
-
-void SIPO(unsigned int byte);
+void shiftin(bool *array);
 
 
 void init(void);
