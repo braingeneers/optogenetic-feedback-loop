@@ -17,8 +17,6 @@ using namespace std;
 void pulse(int pin){
 	bcm2835_gpio_write(pin, LOW);
 	bcm2835_gpio_write(pin, HIGH);
-	//digitalWrite(pin, 0);
-	//digitalWrite(pin, 1);
 }
 
 void SIPO(unsigned int byte){
@@ -26,11 +24,9 @@ void SIPO(unsigned int byte){
 	int out;
 
 	for(i=0;i<LEDS;i++){
-		//out = 1;
-		out = ((byte & (LED_MASK >> i)) > 0);
+		out = (byte & (LED_MASK >> i)) > 0;
 		printf("out: %d, %x\n", out, out);
 		bcm2835_gpio_write(SDI, out);
-		//digitalWrite(SDI, out);
 		pulse(SRCLK);
 	}
 
@@ -45,40 +41,17 @@ void init(void){
 	bcm2835_gpio_write(RCLK, LOW);
 	bcm2835_gpio_write(SRCLK, LOW);
 
-	//pinMode(SDI, OUTPUT); //make P0 output
-	//pinMode(RCLK, OUTPUT); //make P0 output
-	//pinMode(SRCLK, OUTPUT); //make P0 output
-
-	//digitalWrite(SDI, 0);
-	//digitalWrite(RCLK, 0);
-	//digitalWrite(SRCLK, 0);
-
         SIPO(0);
         pulse(RCLK);
-        delay(500);
-
-        SIPO(0);
-        pulse(RCLK);
-        delay(500);
-
+        delay(50);
 
 }
 
 
 int main(void) {
 
-	if(!bcm2835_init()){
-		cout << "Init failed" << endl;
-	 	return 1;
-	}
+	if(!bcm2835_init()) return 1;
 
-
-	//if(wiringPiSetup() == -1){ //when initialize wiring failed,print messageto screen
-	//	printf("setup wiringPi failed !");
-	//	return 1; 
-	//}
-
-	//init();
 
 	while(1){
 
