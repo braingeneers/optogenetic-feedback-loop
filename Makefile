@@ -13,11 +13,17 @@ CC = g++ -std=c++17
 #MAIN_SRC = src/main.c led_driver src/ledarray/driver.h
 #DRIVER_SRC = src/ledarray/driver.c src/ledarray/driver.h
 
-SRC=$(wildcard src/*.c)
+ARRAY_SRC=$(wildcard src/array/*.c) #src/driver.c src/driver.h src/array.c
+MASTER_SRC=$(wildcard src/master/*.c)  #src/master.c src/organoid.c src/organoid.h src/display.c src/display.h src/supervisor.c src/supervisor.h
 
-all: uiblink
+all: array master
 
-uiblink: $(SRC)
+
+array: $(ARRAY_SRC)
+	$(CC) -o $@ $^ $(CFLAGS)
+
+
+master: $(MASTER_SRC)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 
@@ -53,5 +59,5 @@ uiblink: $(SRC)
 
 
 clean:
-	@rm uiblink #blink 74HC595_LED sr ui74HC595 opti_ui74HC595
+	@rm array master#uiblink #blink 74HC595_LED sr ui74HC595 opti_ui74HC595
 
