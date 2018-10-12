@@ -23,7 +23,7 @@ Optogenetic feedback loop for shaping the behavior of cortical organoids
 ### Communication Protocol
   - Messages sent via UNIX network sockets
     - Master sends boolean values as a list inside Message
-    - Array recieves message and toggles LEDs
+    - Array receives message and toggles LEDs
 
 ### Graphics Library 
   - Display events in graphical user interface
