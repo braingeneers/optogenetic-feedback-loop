@@ -2,6 +2,7 @@
 Optogenetic feedback loop for shaping the behavior of cortical organoids
 
 ## Contents
+
 ### Array
   Drives Raspberry Pi Zero GPIO connected to Serial to Parallel Converter Chips
   - Serial Shift Register Chip: 8 bit, 7HC595 from NXP Semiconductors
@@ -12,15 +13,18 @@ Optogenetic feedback loop for shaping the behavior of cortical organoids
   - Raspberry pi pinout reference: https://pinout.xyz/pinout/wiringpi
   
 ### Organoid Simulation
-
+- Predict organoid output based on array input, refine model with real organoid data
 
 ### Supervisor Algorithm
-- Hebbian Learning feedback loop
+- Hebbian Learning Feedback Loop
+- Mediating connections between different organoids
+- Simplified Difference Target Propagation (SDTP)
 
 ### Communication Protocol
-  - UNIX network sockets
-  - Master send boolean values as a list inside Message
-  - Array recieves message and toggles LEDs
+  - Messages sent via UNIX network sockets
+    - Master sends boolean values as a list inside Message
+    - Array recieves message and toggles LEDs
 
 ### Graphics Library 
+  - Display events in graphical user interface
 
