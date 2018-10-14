@@ -1,6 +1,11 @@
 # optogenetic-feedback-loop
 Optogenetic feedback loop for shaping the behavior of cortical organoids
 
+## System Architecture
+![Architecture1](OptogeneticFeedbackLoop_1.png)
+![Architecture3](OptogeneticFeedbackLoop_2.png)
+![Architecture3](OptogeneticFeedbackLoop_3.png)
+
 ## Contents
 
 ### Array
