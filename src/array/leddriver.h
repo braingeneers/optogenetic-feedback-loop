@@ -57,10 +57,12 @@ class Array {
 class Board {
       private:
           int numArrays_;
+          //int arraySize_;  //8 //leds per array
+          //int ledMask_; //define LED_MASK 0x80
 
       public:
           std::vector<Array*> Arrays;
-          Board(int numArrays){ numArrays_=numArrays; };
+          Board(int numArrays){ numArrays_=numArrays; }; //arraySize, ledMask
           ~Board(){ for(Array* ledArray: Arrays) delete ledArray; };
           void addArray(int sdi, int rclk, int srclk){Arrays.push_back(new Array(sdi, rclk, srclk)); };
           int numArrays() {return numArrays_;};
@@ -68,19 +70,22 @@ class Board {
 };
 
 
-
-
-#endif  /*_LEDDRIVER_H*/
-
-
-//class Cluster {};
 /*class Rack {
     private:
-          std::vector<Board>;
+          int numBoards_;
 
     public:
-        void start();
-        void stop();
+        std::vector<Board*> Boards;
+        Rack(int numBoards){ numBoards_=numBoards; };
+        ~Rack(){ for(Board* ledBoard: Boards) delete ledBoard; };
+        void addBoard(int numArrays){Boards.push_back(new Board(numArrays)); };
+        int numBoards() {return numBoards_;};
 
 };
 */
+
+//class Cluster {};
+
+
+
+#endif  /*_LEDDRIVER_H*/
