@@ -12,6 +12,8 @@
 #include <bcm2835.h>
 #include <stdio.h>
 #include <iostream>
+#include <iterator>
+#include <vector>
 
 
 #define   SDI   16 //27   //serial data input
@@ -30,6 +32,7 @@
 //int arraySize; //8 //leds per array
 //int ledMask; //0x80
 //int standardDelay;
+void pulse(int pin);
 
 class Array {
       private:
@@ -38,36 +41,42 @@ class Array {
         int srclk_;  //shift register clock input (SHCP) //21
 
       public:
+        Array(int sdi, int rclk, int srclk);
+
         int rclk(void) {return rclk_;};
         int sdi(void) {return sdi_;};
         int srclk(void) {return srclk_;};
-        void init(int sdi, int rclk, int srclk);
+
         void shiftin(bool *pattern);
-        //void stop();
 
 };
 
 
-void pulse(int pin);
 
-/*
+
 class Board {
       private:
-          std::vector<LedArray>;
-
+          int numArrays_;
 
       public:
-          void start(const int port, const unsigned int cores);
-          void stop();
-
+          std::vector<Array*> Arrays;
+          Board(int numArrays){ numArrays_=numArrays; };
+          ~Board(){ for(Array* ledArray: Arrays) delete ledArray; };
+          void addArray(int sdi, int rclk, int srclk){Arrays.push_back(new Array(sdi, rclk, srclk)); };
+          int numArrays() {return numArrays_;};
 
 };
 
 
-class Rack {
+
+
+#endif  /*_LEDDRIVER_H*/
+
+
+//class Cluster {};
+/*class Rack {
     private:
           std::vector<Board>;
-
 
     public:
         void start();
@@ -75,9 +84,3 @@ class Rack {
 
 };
 */
-
-
-//class Cluster {};
-
-
-#endif /*_LEDDRIVER_H*/

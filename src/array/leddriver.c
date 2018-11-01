@@ -28,7 +28,7 @@ void Array::shiftin(bool *pattern){
 
 }
 
-void Array::init(int sdi, int rclk, int srclk){
+Array::Array(int sdi, int rclk, int srclk){
 		    std::cout <<  "Initializing Array!!" << std::endl;
 				this->sdi_ = sdi;
 				this->rclk_ = rclk;

@@ -26,10 +26,13 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   if(!bcm2835_init()) return 1;
-  Array* myArray_first =  new Array;
-  Array* myArray_second =  new Array;
-  myArray_first->init(SDI, RCLK, SRCLK);
-  myArray_second->init(SDI_2, RCLK_2, SRCLK_2);
+  //Array* myArray_first =  new Array(SDI, RCLK, SRCLK);
+  //Array* myArray_second =  new Array(SDI_2, RCLK_2, SRCLK_2);
+
+  Board* myBoard = new Board(2);
+  myBoard->addArray(SDI, RCLK, SRCLK);
+  myBoard->addArray(SDI_2, RCLK_2, SRCLK_2);
+
 /*  int port = atoi(argv[1]);
 
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
@@ -70,12 +73,16 @@ int main(int argc, char *argv[]) {
           for(int i=0;i<ARRAY_SIZE;i++) {msg.pattern[i] = (array & (LED_MASK >> i)) > 0;}
           cout <<  "Shifting in..." << endl;
 
-          myArray_first->shiftin(msg.pattern);
-          pulse(myArray_first->rclk());
+          //myArray_first->shiftin(msg.pattern);
+          //pulse(myArray_first->rclk());
 
-          myArray_second->shiftin(msg.pattern);
-          pulse(myArray_second->rclk());
+          //myArray_second->shiftin(msg.pattern);
+          //pulse(myArray_second->rclk());
 
+          for(Array* ledArray : myBoard->Arrays){
+            ledArray->shiftin(msg.pattern);
+            pulse(ledArray->rclk());
+          }
 
         } while (1); //msg.flag != LAST);
 
@@ -83,8 +90,7 @@ int main(int argc, char *argv[]) {
       //  close(sockfd);
 
         bcm2835_close();
-        delete myArray_first;
-        delete myArray_second;
+        delete myBoard;
         return 0;
 
 
