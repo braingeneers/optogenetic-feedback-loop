@@ -26,7 +26,11 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
   if(!bcm2835_init()) return 1;
-  int port = atoi(argv[1]);
+  Array* myArray_first =  new Array;
+  Array* myArray_second =  new Array;
+  myArray_first->init(SDI, RCLK, SRCLK);
+  myArray_second->init(SDI_2, RCLK_2, SRCLK_2);
+/*  int port = atoi(argv[1]);
 
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sockfd < 0) exit(-1);
@@ -40,47 +44,47 @@ int main(int argc, char *argv[]) {
   if (bind(sockfd, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) exit(-1);
 
   struct sockaddr_in remote_addr;
-  socklen_t len = sizeof(remote_addr);
+  socklen_t len = sizeof(remote_addr);*/
 
-        //unsigned int num  = atoi(argv[3]);
-      //  const unsigned int terminate = 0;
+      Message msg;
+      //  int n;
 
-        //send list to server
-      //  for(unsigned int &num : list){
-      //        int n = sendto(sockfd, &num, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr,len);
-      //        if (n < 0) exit(-1);
-      //  }
-
-        //end list transmission
-        //int n = sendto(sockfd, &terminate, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr,len);
-        //if (n < 0) exit(-1);
-
-        //recieve sorted list
-        Message msg;
-        int n;
+        int array;
 
 
       //  for (unsigned int &num : list){
           //  unsigned int buffer; //char buffer[256];
             //buffer = 0; //bzero(buffer,256);
         do{
-          n = recvfrom(sockfd, &msg, sizeof(msg), 0,(struct sockaddr *)&remote_addr, &len);
+        /*  n = recvfrom(sockfd, &msg, sizeof(msg), 0,(struct sockaddr *)&remote_addr, &len);
           if (n < 0) exit(-1);
           cout << "Recieved the pattern: ";
-          for(int i; i<ARRAY_SIZE; i++){ cout << msg.pattern[i] << " "; }
+          for(int i; i<myArray->arraySize; i++){ cout << msg.pattern[i] << " "; }
           std::cout << std::endl;
+*/
+          msg.pattern[ARRAY_SIZE] = {0};
+
+//int array = rand() & rand();
+          cout <<  "What array configuration?" << endl;
+          cin >> array;
+          for(int i=0;i<ARRAY_SIZE;i++) {msg.pattern[i] = (array & (LED_MASK >> i)) > 0;}
+          cout <<  "Shifting in..." << endl;
+
+          myArray_first->shiftin(msg.pattern);
+          pulse(myArray_first->rclk());
+
+          myArray_second->shiftin(msg.pattern);
+          pulse(myArray_second->rclk());
 
 
-          shiftin(msg.pattern);
-          pulse(RCLK);
-          delay(25);
-
-        } while (msg.flag != LAST);
+        } while (1); //msg.flag != LAST);
 
 
-        close(sockfd);
+      //  close(sockfd);
 
         bcm2835_close();
+        delete myArray_first;
+        delete myArray_second;
         return 0;
 
 
