@@ -21,9 +21,11 @@ int main(int argc, char *argv[]) {
   Message msg;
 
   for (;;) {
-      bzero(msg.note,30);
+      bzero(msg.pattern,ARRAY_SIZE);
       myServer->recieve(&msg);
-      printf("Received: %s\n", msg.note);
+      cout << "Recieved: ";
+      for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
+      cout << endl;
       myServer->send(&msg);
   }
 

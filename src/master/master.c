@@ -31,12 +31,14 @@ int main(int argc, char *argv[]) {
   myClient->start(argv[1], argv[2]);
 
   Message msg;
-  strcpy(msg.note, argv[3]);
+  memset(msg.pattern, false, ARRAY_SIZE);
+  //for(bool b : msg.pattern) b = true;
   myClient->send(&msg);
-  bzero(msg.note,30);
+  bzero(msg.pattern, ARRAY_SIZE);
   myClient->recieve(&msg);
-  printf("Received: %s\n",msg.note);
-
+  cout << "Recieved: ";
+  for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
+  cout << endl;
   myClient->stop();
 
   delete myClient;
