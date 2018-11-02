@@ -38,9 +38,10 @@ using namespace std;
  */
 
 typedef struct message_t {
-    //bool pattern[ARRAY_SIZE]; // Sorted or to-be sorted numbers if FLAG is NONE or LAST
+//  bool pattern[ARRAY_SIZE]; // Sorted or to-be sorted numbers if FLAG is NONE or LAST
                                     // Missing sequence numbers if FLAG is RESEND
-     int size; // Number of valid entries in VALUES
+  //   int size; // Number of valid entries in VALUES
+  char note[30];
 //    unsigned int sequence;   // Unique sequence number of trasmission batch, starting at zero
   //  unsigned int flag;       // One of NONE, LAST, RESEND
 }
@@ -49,37 +50,39 @@ Message;
 
 class Server {
       private:
-        int sockfd_;
-        int port_;
-        int n_;
+        int port;
+        int sockfd;
+        socklen_t len;
         struct sockaddr_in server_addr;
         struct sockaddr_in remote_addr;
-        socklen_t len_;
+        int n;
 
       public:
-        void start(int dport);
-        void stop();
+      //  void runServer(char* argv1);
+        void start(char * argv1);
+        void send(Message * msg);
         void recieve(Message* msg);
+        void stop();
 
 };
 
 
 class Client{
     private:
-      int sockfd_;
-      int port_;
-      int n_;
-      struct hostent *server;
+      int port;
+      int sockfd;
+      socklen_t len;
       struct sockaddr_in remote_addr;
-      socklen_t len_;
+      struct hostent *server;
+      int n;
 
     public:
-      void start(char* host, int port);
-      void stop();
+    //  void runClient(char * argv1, char* argv2, char * argv3);
+      void start(char * argv1, char* argv2);
       void send(Message* msg);
-
+      void recieve(Message* msg);
+      void stop();
 };
-
 
 
 

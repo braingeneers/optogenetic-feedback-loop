@@ -48,6 +48,7 @@ Array::Array(int sdi, int rclk, int srclk){
 			  std::cout <<  "Flash!" << std::endl;
 				bool pattern[ARRAY_SIZE] = {0};
 				shiftin(pattern);
+				pulse(rclk_);
         delay(STANDARD_DELAY);
 
 }

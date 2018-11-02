@@ -27,16 +27,21 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-  cout << "Initializing Client..." << endl;
-  Client* masterClient = new Client();
-  cout << "Starting Server..." << endl;
-
-  char* host = argv[1];
-  masterClient->start(host, atoi(argv[2]) );
+  Client* myClient = new Client();
+  myClient->runClient(argv[1], argv[2], argv[3]);
+  delete myClient;
 
 
-  Message msg;
-  int array;
+  //cout << "Initializing Client..." << endl;
+  //Client* masterClient = new Client();
+  //cout << "Starting Server..." << endl;
+
+/*  char* host = argv[1];
+  //masterClient->start(host, atoi(argv[2]) );
+
+
+//  Message msg;
+  char array[8] = {0};
 //  int last;
 
   //unsigned int buffer;
@@ -48,19 +53,18 @@ int main(int argc, char *argv[]) {
     cin >> array;
   //  for(int i=0;i<ARRAY_SIZE;i++) msg.pattern[i] = (array & (LED_MASK >> i)) > 0;
   //  cout << endl;
-
-
     //cout <<  "Last Message? Enter: 0 or 1" << endl;
     //cin >> last;
     //msg.flag = (last = 0) ? LAST : NONE;
   //  msg.flag = LAST;
 
-    cout << "Sending Message with this array: " << msg.size << endl;
+    cout << "Sending Message with this array ..." << endl;
   //  for(int i=0; i<ARRAY_SIZE; i++){ cout << msg.pattern[i] << " "; }
   //  std::cout << std::endl;
 
-    msg.size = htonl(array);
-    masterClient->send(&msg);
+  sendUDP(argv[3], host, atoi(argv[2]));
+//    msg.size = htonl(array);
+//    masterClient->send(&msg);
 
 
     delay(25);
@@ -87,6 +91,7 @@ int main(int argc, char *argv[]) {
   }
 
 
-  masterClient->stop();
+//  masterClient->stop();
 
+*/
 }
