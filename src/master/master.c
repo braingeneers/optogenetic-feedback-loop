@@ -30,83 +30,37 @@ int main(int argc, char *argv[]) {
   Client* myClient = new Client();
   myClient->start(argv[1], argv[2]);
 
-  Message msg;
-  memset(msg.pattern, false, ARRAY_SIZE);
-  //for(bool b : msg.pattern) b = true;
-  myClient->send(&msg);
-  bzero(msg.pattern, ARRAY_SIZE);
-  myClient->recieve(&msg);
-  cout << "Recieved: ";
-  for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
-  cout << endl;
-  myClient->stop();
+  //------------------------
+  int  pattern;
+  //int last;
+  //------------------------
 
+  Message msg;
+
+
+    for (;;) {
+    //  memset(msg.pattern, false, ARRAY_SIZE);
+  bzero(msg.pattern, ARRAY_SIZE);
+      //for(bool b : msg.pattern) b = true;
+
+      cout <<  "What array configuration?" << endl;
+      cin >> pattern;
+      for(int i=0;i<ARRAY_SIZE;i++) msg.pattern[i] = (pattern & (LED_MASK >> i)) > 0;
+      cout << endl;
+
+      myClient->send(&msg);
+      bzero(msg.pattern, ARRAY_SIZE);
+      myClient->recieve(&msg);
+      cout << "Recieved: ";
+      for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
+      cout << endl;
+
+
+    }
+
+  myClient->stop();
   delete myClient;
 
 
 
-
-
-  //cout << "Initializing Client..." << endl;
-  //Client* masterClient = new Client();
-  //cout << "Starting Server..." << endl;
-
-/*  char* host = argv[1];
-  //masterClient->start(host, atoi(argv[2]) );
-
-
-//  Message msg;
-  char array[8] = {0};
-//  int last;
-
-  //unsigned int buffer;
-  for (;;) {
-  //  msg.pattern[ARRAY_SIZE] = {0};
-
-  //  array = rand() & rand();
-    cout <<  "What array configuration?" << endl;
-    cin >> array;
-  //  for(int i=0;i<ARRAY_SIZE;i++) msg.pattern[i] = (array & (LED_MASK >> i)) > 0;
-  //  cout << endl;
-    //cout <<  "Last Message? Enter: 0 or 1" << endl;
-    //cin >> last;
-    //msg.flag = (last = 0) ? LAST : NONE;
-  //  msg.flag = LAST;
-
-    cout << "Sending Message with this array ..." << endl;
-  //  for(int i=0; i<ARRAY_SIZE; i++){ cout << msg.pattern[i] << " "; }
-  //  std::cout << std::endl;
-
-  sendUDP(argv[3], host, atoi(argv[2]));
-//    msg.size = htonl(array);
-//    masterClient->send(&msg);
-
-
-    delay(25);
-    //  buffer = 0;//bzero(buffer,256);
-
-    //  int n = recvfrom(sockfd, &buffer, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr, &len);
-    //  if (n < 0) exit(-1);
-
-      //printf("Received: %d\n", buffer);
-
-      //if (buffer != 0){
-      //  list.push_back(buffer);
-        //cout << "My list is now: ";
-        //print(list);
-      //} else {
-        //cout << "Sorting list";
-    //    for(unsigned int num : list){
-    //      n = sendto(sockfd, &num, sizeof(unsigned int), 0, (struct sockaddr *)&remote_addr, len);
-    //      if (n < 0) exit(-1);
-      //  }
-        //list.clear();
-      //}
-
-  }
-
-
-//  masterClient->stop();
-
-*/
 }
