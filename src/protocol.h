@@ -38,11 +38,11 @@ using namespace std;
  */
 
 typedef struct message_t {
-    bool pattern[ARRAY_SIZE]; // Sorted or to-be sorted numbers if FLAG is NONE or LAST
+    //bool pattern[ARRAY_SIZE]; // Sorted or to-be sorted numbers if FLAG is NONE or LAST
                                     // Missing sequence numbers if FLAG is RESEND
-  //  unsigned int size; // Number of valid entries in VALUES
-    unsigned int sequence;   // Unique sequence number of trasmission batch, starting at zero
-    unsigned int flag;       // One of NONE, LAST, RESEND
+     int size; // Number of valid entries in VALUES
+//    unsigned int sequence;   // Unique sequence number of trasmission batch, starting at zero
+  //  unsigned int flag;       // One of NONE, LAST, RESEND
 }
 Message;
 
@@ -64,42 +64,21 @@ class Server {
 };
 
 
-void Server::start(int dport){
-      std::cout<< "1" << endl;
-       port_ = dport;
-       sockfd_= socket(AF_INET, SOCK_DGRAM, 0);
-       if (sockfd_ < 0) exit(-1);
+class Client{
+    private:
+      int sockfd_;
+      int port_;
+      int n_;
+      struct hostent *server;
+      struct sockaddr_in remote_addr;
+      socklen_t len_;
 
-      std::cout<< "2" << endl;
-       bzero((char *) &server_addr, sizeof(server_addr));
-             std::cout<< "3" << endl;
-       server_addr.sin_family = AF_INET;
-       server_addr.sin_addr.s_addr = INADDR_ANY;
-       server_addr.sin_port = htons(port_);
+    public:
+      void start(char* host, int port);
+      void stop();
+      void send(Message* msg);
 
-      std::cout<< "4" << endl;
-       if (bind(sockfd_, (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) exit(-1);
-
-      std::cout<< "5" << endl;
-       len_ = sizeof(remote_addr);
-
-}
-
-
-
-void Server::recieve(Message* msg){
-       n_ = recvfrom(sockfd_, &msg, sizeof(msg), 0,(struct sockaddr *)&remote_addr, &len_);
-       if (n_ < 0) exit(-1);
-}
-
-
-
-
-void Server::stop(){ close(sockfd_); }
-
-
-
-
+};
 
 
 

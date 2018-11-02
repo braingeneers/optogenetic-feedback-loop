@@ -20,58 +20,48 @@
 #include <netdb.h>
 
 #include "../protocol.h"
+#include "../protocol.c"
 
 using namespace std;
 
 
 int main(int argc, char *argv[]) {
-  //std::vector<unsigned int> list;
 
-  //cout << "I'm server!";
+  cout << "Initializing Client..." << endl;
+  Client* masterClient = new Client();
+  cout << "Starting Server..." << endl;
+
+  char* host = argv[1];
+  masterClient->start(host, atoi(argv[2]) );
 
 
-  int port = atoi(argv[2]);
-  int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  if (sockfd < 0) exit(-1);
-
-  struct hostent *server = gethostbyname(argv[1]);
-  if (server == NULL) exit(-1);
-
-  struct sockaddr_in remote_addr;
-  bzero((char *) &remote_addr, sizeof(remote_addr));
-  remote_addr.sin_family = AF_INET;
-  bcopy((char *)server->h_addr, (char *)&remote_addr.sin_addr.s_addr, server->h_length);
-  remote_addr.sin_port = htons(port);
-
-  socklen_t len = sizeof(remote_addr);
-
-  int n;
   Message msg;
+  int array;
+//  int last;
 
   //unsigned int buffer;
   for (;;) {
+  //  msg.pattern[ARRAY_SIZE] = {0};
 
-    msg.pattern[ARRAY_SIZE] = {0};
-
-    int array = rand() & rand();
-  //  cout <<  "What array configuration?" << endl;
-  //  cin >> array;
-    for(int i=0;i<ARRAY_SIZE;i++) msg.pattern[i] = (array & (LED_MASK >> i)) > 0;
-    cout << endl;
-    msg.flag = NONE;
+  //  array = rand() & rand();
+    cout <<  "What array configuration?" << endl;
+    cin >> array;
+  //  for(int i=0;i<ARRAY_SIZE;i++) msg.pattern[i] = (array & (LED_MASK >> i)) > 0;
+  //  cout << endl;
 
 
+    //cout <<  "Last Message? Enter: 0 or 1" << endl;
+    //cin >> last;
+    //msg.flag = (last = 0) ? LAST : NONE;
+  //  msg.flag = LAST;
 
+    cout << "Sending Message with this array: " << msg.size << endl;
+  //  for(int i=0; i<ARRAY_SIZE; i++){ cout << msg.pattern[i] << " "; }
+  //  std::cout << std::endl;
 
-    cout << "Sending Message with this array: " << endl;
-    for(int i; i<ARRAY_SIZE; i++){ cout << msg.pattern[i] << " "; }
-    std::cout << std::endl;
+    msg.size = htonl(array);
+    masterClient->send(&msg);
 
-
-    n = sendto(sockfd, &msg, sizeof(msg), 0, (struct sockaddr *)&remote_addr, len);
-    if (n < 0) exit(-1);
-
-    cout << "Message sent!" << endl;
 
     delay(25);
     //  buffer = 0;//bzero(buffer,256);
@@ -97,9 +87,6 @@ int main(int argc, char *argv[]) {
   }
 
 
-
-
- close(sockfd);
-
+  masterClient->stop();
 
 }

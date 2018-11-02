@@ -21,7 +21,7 @@ void Array::shiftin(bool *pattern){
 	for(i=0;i<ARRAY_SIZE;i++){
 		//out = (byte & (LED_MASK >> i)) > 0;
 		out = pattern[i];
-		printf("out: %d, %x\n", out, out);
+		printf("out: %d\n", out);
 		bcm2835_gpio_write(this->sdi_, out);
 		pulse(this->srclk_);
 	}

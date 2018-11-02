@@ -7,6 +7,7 @@
 
 #include "leddriver.h"
 #include "../protocol.h"
+#include "../protocol.c"
 
 #define USAGE "USAGE %s port\n"
 using namespace std;
@@ -31,30 +32,34 @@ int main(int argc, char *argv[]) {
   masterServer->start(atoi(argv[1]));
 
 
-      Message msg;
-      int array;
+    Message msg;
+    //  int array;
 
 
     do{
-      //    masterServer->recieve(&msg);
-  /*        cout << "Recieved the pattern: ";
-          for(int i; i<myArray->arraySize; i++){ cout << msg.pattern[i] << " "; }
-          std::cout << std::endl;
-*/
-          msg.pattern[ARRAY_SIZE] = {0};
+
+        cout << "waiting for Message" << endl;
+          masterServer->recieve(&msg);
+          cout << "Recieved the pattern: " << ntohl(msg.size) << endl;
+          //for(int i=0; i<ARRAY_SIZE; i++){ cout << (bool) msg.pattern[i] << " "; }
+          //std::cout << std::endl;
+      //    cout << "Flag: " << msg.flag <<endl;
+
+//          msg.pattern[ARRAY_SIZE] = {0};
 
           //int array = rand() & rand();
-          cout <<  "What array configuration?" << endl;
+  /*        cout <<  "What array configuration?" << endl;
           cin >> array;
-          for(int i=0;i<ARRAY_SIZE;i++) {msg.pattern[i] = (array & (LED_MASK >> i)) > 0;}
-          cout <<  "Shifting in..." << endl;
+          for(int i=0;i<ARRAY_SIZE;i++) {msg.pattern[i] = (array & (LED_MASK >> i)) > 0;}*/
 
+
+      /*    cout <<  "Shifting in..." << endl;
           for(Array* ledArray : myBoard->Arrays){
             ledArray->shiftin(msg.pattern);
             pulse(ledArray->rclk());
-          }
+          }*/
 
-        } while (1); //msg.flag != LAST);
+        } while (1);//msg.flag != LAST);
 
 
 
