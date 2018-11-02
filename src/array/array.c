@@ -16,7 +16,19 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
   Server* myServer = new Server();
-  myServer->runServer(argv[1]);
+  myServer->start(argv[1]);
+
+  Message msg;
+
+  for (;;) {
+      bzero(msg.note,30);
+      myServer->recieve(&msg);
+      printf("Received: %s\n", msg.note);
+      myServer->send(&msg);
+  }
+
+  myServer->stop();
+
   delete myServer;
 
 

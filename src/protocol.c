@@ -11,7 +11,7 @@
 
 
 
-void Client::runClient(char * argv1, char* argv2, char * argv3){
+/*void Client::runClient(char * argv1, char* argv2, char * argv3){
    start(argv1, argv2);
 
    Message msg;
@@ -22,9 +22,9 @@ void Client::runClient(char * argv1, char* argv2, char * argv3){
    printf("Received: %s\n",msg.note);
 
    stop();
-}
+}*/
 
-void Server::runServer(char* argv1) {
+/*void Server::runServer(char* argv1) {
    start(argv1);
    Message msg;
 
@@ -37,7 +37,7 @@ void Server::runServer(char* argv1) {
 
    stop();
 
-}
+}*/
 
 void Server::start(char * argv1){
     port = atoi(argv1);

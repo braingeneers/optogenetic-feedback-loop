@@ -28,8 +28,21 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
   Client* myClient = new Client();
-  myClient->runClient(argv[1], argv[2], argv[3]);
+  myClient->start(argv[1], argv[2]);
+
+  Message msg;
+  strcpy(msg.note, argv[3]);
+  myClient->send(&msg);
+  bzero(msg.note,30);
+  myClient->recieve(&msg);
+  printf("Received: %s\n",msg.note);
+
+  myClient->stop();
+
   delete myClient;
+
+
+
 
 
   //cout << "Initializing Client..." << endl;
