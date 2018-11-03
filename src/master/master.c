@@ -53,11 +53,10 @@ int main(int argc, char *argv[]) {
       cout << "Which array? 0 or 1" << endl;
       cin >> arraySel;
 
-      (myBoard->Arrays[arraySel])->shiftin(&(msg.sdi),  &(msg.rclk), &(msg.srclk), &pattern, msg.pattern);
+      (myBoard->Arrays[arraySel])->shiftin(&(msg.sdi), &(msg.rclk), &(msg.srclk), &pattern, msg.pattern);
 
       // for(Array* ledArray : myBoard->Arrays){
       //    ledArray->shiftin(msg.pattern);
-      //    pulse(ledArray->rclk());
       // }
 
       myClient->send(&msg);

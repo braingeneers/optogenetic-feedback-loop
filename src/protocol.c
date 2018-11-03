@@ -10,35 +10,6 @@
 #include "protocol.h"
 
 
-
-/*void Client::runClient(char * argv1, char* argv2, char * argv3){
-   start(argv1, argv2);
-
-   Message msg;
-   strcpy(msg.note, argv3);
-   send(&msg);
-   bzero(msg.note,30);
-   recieve(&msg);
-   printf("Received: %s\n",msg.note);
-
-   stop();
-}*/
-
-/*void Server::runServer(char* argv1) {
-   start(argv1);
-   Message msg;
-
-   for (;;) {
-       bzero(msg.note,30);
-       recieve(&msg);
-       printf("Received: %s\n", msg.note);
-       send(&msg);
-   }
-
-   stop();
-
-}*/
-
 void Server::start(char * argv1){
     port = atoi(argv1);
 
@@ -99,3 +70,32 @@ void Client::send(Message* msg){
 }
 
 void Client::stop(){ close(sockfd);}
+
+
+/*void Client::runClient(char * argv1, char* argv2, char * argv3){
+   start(argv1, argv2);
+
+   Message msg;
+   strcpy(msg.note, argv3);
+   send(&msg);
+   bzero(msg.note,30);
+   recieve(&msg);
+   printf("Received: %s\n",msg.note);
+
+   stop();
+}*/
+
+/*void Server::runServer(char* argv1) {
+   start(argv1);
+   Message msg;
+
+   for (;;) {
+       bzero(msg.note,30);
+       recieve(&msg);
+       printf("Received: %s\n", msg.note);
+       send(&msg);
+   }
+
+   stop();
+
+}*/

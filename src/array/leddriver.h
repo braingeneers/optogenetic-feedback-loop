@@ -49,10 +49,7 @@ class Array {
         int rclk(void) {return rclk_;};
         int sdi(void) {return sdi_;};
         int srclk(void) {return srclk_;};
-
-        //void shiftin(bool *pattern);
-      //  void shiftin(Message * msg, int pattern, Client * myClient);
-      void shiftin(int * sdi,  int *rclk, int* srclk, int * inPattern, bool * pattern);
+        void shiftin(int * sdi,  int *rclk, int* srclk, int * inPattern, bool * pattern);
 };
 
 

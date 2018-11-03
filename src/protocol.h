@@ -24,12 +24,6 @@
 #include "array/leddriver.h"
 
 using namespace std;
-//#define MAX_VALUES 128
-
-#define NONE    0 // Default flag for on-wire datagram
-#define LAST    1 // Identifies last datagram in batch
-#define RESEND  2 // Request for a re-send of missing batches
-                   // If set, VALUES contains the sequence numbers of missing batches
 
 /*
  * On-wire datagram.
@@ -38,15 +32,10 @@ using namespace std;
  */
 
 typedef struct message_t {
-  bool pattern[ARRAY_SIZE];
-  int sdi;
-  int rclk;
-  int srclk;// Sorted or to-be sorted numbers if FLAG is NONE or LAST
-                                    // Missing sequence numbers if FLAG is RESEND
-  //   int size; // Number of valid entries in VALUES
-  //char note[30];
-//    unsigned int sequence;   // Unique sequence number of trasmission batch, starting at zero
-  //  unsigned int flag;       // One of NONE, LAST, RESEND
+      bool pattern[ARRAY_SIZE];
+      int sdi;
+      int rclk;
+      int srclk;
 }
 Message;
 

@@ -20,24 +20,24 @@ void initPins(){	//set  pins as outputs
 }
 
 void pulse(int pin){
-	bcm2835_gpio_write(pin, LOW);
-	bcm2835_gpio_write(pin, HIGH);
+		bcm2835_gpio_write(pin, LOW);
+		bcm2835_gpio_write(pin, HIGH);
 }
 
 
 void activate(int sdi, int rclk, int srclk, bool * pattern){
-	int i;
-	bool out;
+			int i;
+			bool out;
 
-  std::cout <<  "Set array by shiftin()" << std::endl;
-	for(i=0;i<ARRAY_SIZE;i++){
-		//out = (byte & (LED_MASK >> i)) > 0;
-		out = pattern[i];
-		printf("out: %d\n", out);
-		bcm2835_gpio_write(sdi, out);
-		pulse(srclk);
-	}
-	pulse(rclk);
+		  std::cout <<  "Set array by shiftin()" << std::endl;
+			for(i=0;i<ARRAY_SIZE;i++){
+				//out = (byte & (LED_MASK >> i)) > 0;
+				out = pattern[i];
+				printf("out: %d\n", out);
+				bcm2835_gpio_write(sdi, out);
+				pulse(srclk);
+			}
+			pulse(rclk);
 
 }
 
@@ -47,11 +47,9 @@ void Array::shiftin(int * sdi,  int *rclk, int* srclk, int * inPattern, bool * p
 		*sdi = sdi_;
 		*rclk = rclk_;
 		*srclk = srclk_;
-	/*	msg.sdi = 16;
-		msg.rclk = 20;
-		msg.srclk = 21;*/
-		std::cout << "inPattern: " << inPattern << " " << *inPattern << std::endl; 
-	for(int i=0;i<ARRAY_SIZE;i++) pattern[i] = (*inPattern & (LED_MASK >> i)) > 0;
+
+		std::cout << "inPattern: " << inPattern << " " << *inPattern << std::endl;
+		for(int i=0;i<ARRAY_SIZE;i++) pattern[i] = (*inPattern & (LED_MASK >> i)) > 0;
 
 
 }
@@ -62,16 +60,9 @@ Array::Array(int sdi, int rclk, int srclk){
 				this->sdi_ = sdi;
 				this->rclk_ = rclk;
 				this->srclk_ = srclk;
-
-				//shift zeroes into the chip to clear the array
-			/*  std::cout <<  "Flash!" << std::endl;
-				bool pattern[ARRAY_SIZE] = {0};
-				shiftin(pattern);
-				pulse(rclk_);*/
-        delay(STANDARD_DELAY);
-
 }
+
 
 void Board::addArray(int sdi, int rclk, int srclk){
 	Arrays.push_back(new Array(sdi, rclk, srclk));
-};
+}
