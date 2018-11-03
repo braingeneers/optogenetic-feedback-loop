@@ -35,7 +35,7 @@
 void pulse(int pin);
 void activate(int sdi, int rclk, int srclk, bool * pattern);
 void initPins();
-/*
+
 
 class Array {
       private:
@@ -44,17 +44,16 @@ class Array {
         int srclk_;  //shift register clock input (SHCP) //21
 
       public:
-        Array(int sdi, int rclk, int srclk,  Client * myClient);
+        Array(int sdi, int rclk, int srclk); //Client * myClient);
 
         int rclk(void) {return rclk_;};
         int sdi(void) {return sdi_;};
         int srclk(void) {return srclk_;};
 
         //void shiftin(bool *pattern);
-        void shiftin(Message * msg, int pattern, Client * myClient);
+      //  void shiftin(Message * msg, int pattern, Client * myClient);
+      void shiftin(int * sdi,  int *rclk, int* srclk, int * inPattern, bool * pattern);
 };
-
-
 
 
 class Board {
@@ -67,10 +66,10 @@ class Board {
           std::vector<Array*> Arrays;
           Board(int numArrays){ numArrays_=numArrays; }; //arraySize, ledMask
           ~Board(){ for(Array* ledArray: Arrays) delete ledArray; };
-          void addArray(int sdi, int rclk, int srclk){Arrays.push_back(new Array(sdi, rclk, srclk)); };
+          void addArray(int sdi, int rclk, int srclk);
           int numArrays() {return numArrays_;};
 
-};*/
+};
 
 
 /*class Rack {

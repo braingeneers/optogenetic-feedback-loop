@@ -21,7 +21,8 @@
 
 #include "../protocol.h"
 #include "../protocol.c"
-
+#include "../array/leddriver.h"
+#include "../array/leddriver.c"
 using namespace std;
 
 
@@ -31,10 +32,11 @@ int main(int argc, char *argv[]) {
   myClient->start(argv[1], argv[2]);
 
   //------------------------
-  //Board* myBoard = new Board(2);
-  //myBoard->addArray(SDI, RCLK, SRCLK);
-  //myBoard->addArray(SDI_2, RCLK_2, SRCLK_2);
+  Board* myBoard = new Board(2);
+  myBoard->addArray(SDI, RCLK, SRCLK);
+  myBoard->addArray(SDI_2, RCLK_2, SRCLK_2);
   int  pattern;
+  int arraySel;
   //int last;
   //------------------------
 
@@ -43,16 +45,20 @@ int main(int argc, char *argv[]) {
 
     for (;;) {
     //  memset(msg.pattern, false, ARRAY_SIZE);
-  bzero(msg.pattern, ARRAY_SIZE);
+      bzero(msg.pattern, ARRAY_SIZE);
       //for(bool b : msg.pattern) b = true;
 
       cout <<  "What array configuration?" << endl;
       cin >> pattern;
-      for(int i=0;i<ARRAY_SIZE;i++) msg.pattern[i] = (pattern & (LED_MASK >> i)) > 0;
-      cout << endl;
-      msg.sdi = 16;
-      msg.rclk = 20;
-      msg.srclk = 21;
+      cout << "Which array? 0 or 1" << endl;
+      cin >> arraySel;
+
+      (myBoard->Arrays[arraySel])->shiftin(&(msg.sdi),  &(msg.rclk), &(msg.srclk), &pattern, msg.pattern);
+
+      // for(Array* ledArray : myBoard->Arrays){
+      //    ledArray->shiftin(msg.pattern);
+      //    pulse(ledArray->rclk());
+      // }
 
       myClient->send(&msg);
       bzero(msg.pattern, ARRAY_SIZE);
@@ -64,7 +70,7 @@ int main(int argc, char *argv[]) {
 
     }
 
-//  delete myBoard;
+  delete myBoard;
 
   myClient->stop();
   delete myClient;

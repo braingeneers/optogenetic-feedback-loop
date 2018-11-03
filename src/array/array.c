@@ -41,10 +41,6 @@ int main(int argc, char *argv[]) {
      cout <<  "Shifting in..." << endl;
      activate(msg.sdi, msg.rclk, msg.srclk, msg.pattern);
 
-    // for(Array* ledArray : myBoard->Arrays){
-    //    ledArray->shiftin(msg.pattern);
-    //    pulse(ledArray->rclk());
-    // }
 
   } while (1);  //msg.flag != LAST);
 
