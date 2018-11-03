@@ -33,6 +33,9 @@
 //int ledMask; //0x80
 //int standardDelay;
 void pulse(int pin);
+void activate(int sdi, int rclk, int srclk, bool * pattern);
+void initPins();
+/*
 
 class Array {
       private:
@@ -41,14 +44,14 @@ class Array {
         int srclk_;  //shift register clock input (SHCP) //21
 
       public:
-        Array(int sdi, int rclk, int srclk);
+        Array(int sdi, int rclk, int srclk,  Client * myClient);
 
         int rclk(void) {return rclk_;};
         int sdi(void) {return sdi_;};
         int srclk(void) {return srclk_;};
 
-        void shiftin(bool *pattern);
-
+        //void shiftin(bool *pattern);
+        void shiftin(Message * msg, int pattern, Client * myClient);
 };
 
 
@@ -67,7 +70,7 @@ class Board {
           void addArray(int sdi, int rclk, int srclk){Arrays.push_back(new Array(sdi, rclk, srclk)); };
           int numArrays() {return numArrays_;};
 
-};
+};*/
 
 
 /*class Rack {

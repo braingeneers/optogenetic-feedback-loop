@@ -8,12 +8,24 @@
 #include "leddriver.h"
 
 
+void initPins(){	//set  pins as outputs
+
+	int pins[] = {SDI, RCLK, SRCLK, SDI_2, RCLK_2, SRCLK_2};
+	//initialize all pins to be outputs, initially low
+	for (int pin : pins){
+			bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_OUTP);
+			bcm2835_gpio_write(pin, LOW);
+	}
+
+}
+
 void pulse(int pin){
 	bcm2835_gpio_write(pin, LOW);
 	bcm2835_gpio_write(pin, HIGH);
 }
 
-void Array::shiftin(bool *pattern){
+
+void activate(int sdi, int rclk, int srclk, bool * pattern){
 	int i;
 	bool out;
 
@@ -22,27 +34,32 @@ void Array::shiftin(bool *pattern){
 		//out = (byte & (LED_MASK >> i)) > 0;
 		out = pattern[i];
 		printf("out: %d\n", out);
-		bcm2835_gpio_write(this->sdi_, out);
-		pulse(this->srclk_);
+		bcm2835_gpio_write(sdi, out);
+		pulse(srclk);
 	}
+	pulse(rclk);
 
 }
+
+
+/*
+void Array::populate(Message * msg, int pattern){
+		msg.sdi = sdi_;
+		msg.rclk = rclk_;
+		msg.srclk = srclk_;
+
+		for(int i=0;i<ARRAY_SIZE;i++)
+				msg.pattern[i] = (pattern & (LED_MASK >> i)) > 0;
+
+}*/
+
+/*
 
 Array::Array(int sdi, int rclk, int srclk){
 		    std::cout <<  "Initializing Array!!" << std::endl;
 				this->sdi_ = sdi;
 				this->rclk_ = rclk;
 				this->srclk_ = srclk;
-
-				//set  pins as outputs
-				bcm2835_gpio_fsel(this->sdi_, BCM2835_GPIO_FSEL_OUTP);
-				bcm2835_gpio_fsel(this->rclk_, BCM2835_GPIO_FSEL_OUTP);
-				bcm2835_gpio_fsel(this->srclk_, BCM2835_GPIO_FSEL_OUTP);
-
-				//initialize all pins to be low
-				bcm2835_gpio_write(	this->sdi_, LOW);
-				bcm2835_gpio_write(	this->rclk_, LOW);
-				bcm2835_gpio_write(	this->srclk_, LOW);
 
 				//shift zeroes into the chip to clear the array
 			  std::cout <<  "Flash!" << std::endl;
@@ -51,4 +68,4 @@ Array::Array(int sdi, int rclk, int srclk){
 				pulse(rclk_);
         delay(STANDARD_DELAY);
 
-}
+}*/

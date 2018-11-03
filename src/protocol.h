@@ -38,7 +38,10 @@ using namespace std;
  */
 
 typedef struct message_t {
-  bool pattern[ARRAY_SIZE]; // Sorted or to-be sorted numbers if FLAG is NONE or LAST
+  bool pattern[ARRAY_SIZE];
+  int sdi;
+  int rclk;
+  int srclk;// Sorted or to-be sorted numbers if FLAG is NONE or LAST
                                     // Missing sequence numbers if FLAG is RESEND
   //   int size; // Number of valid entries in VALUES
   //char note[30];

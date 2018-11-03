@@ -31,6 +31,9 @@ int main(int argc, char *argv[]) {
   myClient->start(argv[1], argv[2]);
 
   //------------------------
+  //Board* myBoard = new Board(2);
+  //myBoard->addArray(SDI, RCLK, SRCLK);
+  //myBoard->addArray(SDI_2, RCLK_2, SRCLK_2);
   int  pattern;
   //int last;
   //------------------------
@@ -47,6 +50,9 @@ int main(int argc, char *argv[]) {
       cin >> pattern;
       for(int i=0;i<ARRAY_SIZE;i++) msg.pattern[i] = (pattern & (LED_MASK >> i)) > 0;
       cout << endl;
+      msg.sdi = 16;
+      msg.rclk = 20;
+      msg.srclk = 21;
 
       myClient->send(&msg);
       bzero(msg.pattern, ARRAY_SIZE);
@@ -57,6 +63,8 @@ int main(int argc, char *argv[]) {
 
 
     }
+
+//  delete myBoard;
 
   myClient->stop();
   delete myClient;

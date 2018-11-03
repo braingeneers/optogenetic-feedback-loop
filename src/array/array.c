@@ -13,17 +13,16 @@
 using namespace std;
 
 
+
 int main(int argc, char *argv[]) {
 
   //-----------------------------------------------------
   if(!bcm2835_init()) return 1;
+  initPins();
+
   if (argc < 2) { printf(USAGE, argv[0]);  return -1;}
   //-----------------------------------------------------
-  Board* myBoard = new Board(2);
-  myBoard->addArray(SDI, RCLK, SRCLK);
-  myBoard->addArray(SDI_2, RCLK_2, SRCLK_2);
-  
-  //-----------------------------------------------------
+
 
   Server* myServer = new Server();
   myServer->start(argv[1]);
@@ -35,25 +34,25 @@ int main(int argc, char *argv[]) {
       myServer->recieve(&msg);
       cout << "Recieved: ";
       for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
+      cout << "sdi: " << msg.sdi << endl << "rclk: " << msg.rclk << endl << "srclk: " << msg.srclk << endl;
       cout << endl;
       myServer->send(&msg);
 
      cout <<  "Shifting in..." << endl;
-     for(Array* ledArray : myBoard->Arrays){
-        ledArray->shiftin(msg.pattern);
-        pulse(ledArray->rclk());
-     }
+     activate(msg.sdi, msg.rclk, msg.srclk, msg.pattern);
+
+    // for(Array* ledArray : myBoard->Arrays){
+    //    ledArray->shiftin(msg.pattern);
+    //    pulse(ledArray->rclk());
+    // }
 
   } while (1);  //msg.flag != LAST);
 
   myServer->stop();
   delete myServer;
 
-
-
-
   bcm2835_close();
-  delete myBoard;
+
   return 0;
 
 
