@@ -16,7 +16,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
   if (argc < 2) { printf(USAGE, argv[0]);  return -1;}
-
+ 
   //initizlize I/O
   if(!bcm2835_init()) return 1;
   initPins();
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
       myServer->send(&msg); //echo
       activate(msg.sdi, msg.rclk, msg.srclk, msg.pattern);
 
-  } while (1);  //msg.flag != LAST);
+  } while (msg.flag != LAST);
 
 
   //Shut down Server

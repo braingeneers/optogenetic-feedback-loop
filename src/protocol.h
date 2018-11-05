@@ -25,6 +25,9 @@
 
 using namespace std;
 
+#define NONE 0
+#define LAST 1
+
 /*
  * On-wire datagram.
  * All elements should be converted to network byte-order before transmission
@@ -36,8 +39,10 @@ typedef struct message_t {
       int sdi;
       int rclk;
       int srclk;
+      int flag;
 }
 Message;
+
 
 
 class Server {

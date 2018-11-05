@@ -29,44 +29,44 @@ void Server::start(char * argv1){
 
 
 void Client::start(char * argv1, char* argv2){
-  port = atoi(argv2);
+      port = atoi(argv2);
 
-  sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-  if (sockfd < 0) exit(-1);
+      sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+      if (sockfd < 0) exit(-1);
 
-  server = gethostbyname(argv1);
-  if (server == NULL) exit(-1);
+      server = gethostbyname(argv1);
+      if (server == NULL) exit(-1);
 
- bzero((char *) &remote_addr, sizeof(remote_addr));
- remote_addr.sin_family = AF_INET;
- bcopy((char *)server->h_addr, (char *)&remote_addr.sin_addr.s_addr, server->h_length);
- remote_addr.sin_port = htons(port);
+     bzero((char *) &remote_addr, sizeof(remote_addr));
+     remote_addr.sin_family = AF_INET;
+     bcopy((char *)server->h_addr, (char *)&remote_addr.sin_addr.s_addr, server->h_length);
+     remote_addr.sin_port = htons(port);
 
- len = sizeof(remote_addr);
+     len = sizeof(remote_addr);
 
 }
 
 
 void Server::send(Message* msg){
-  n = sendto(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, len);
-  if (n < 0) exit(-1);
+    n = sendto(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, len);
+    if (n < 0) exit(-1);
 }
 
 void Server::recieve(Message* msg) {
-  n = recvfrom(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, &len);
-  if (n < 0) exit(-1);
+    n = recvfrom(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, &len);
+    if (n < 0) exit(-1);
 
 }
 void Server::stop(){ close(sockfd);}
 
 void Client::recieve(Message* msg){
-  n = recvfrom(sockfd, msg, sizeof(*msg), 0,(struct sockaddr *)&remote_addr, &len);
-  if (n < 0) exit(-1);
+    n = recvfrom(sockfd, msg, sizeof(*msg), 0,(struct sockaddr *)&remote_addr, &len);
+    if (n < 0) exit(-1);
 }
 
 void Client::send(Message* msg){
-  n = sendto(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, len);
-  if (n < 0) exit(-1);
+    n = sendto(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, len);
+    if (n < 0) exit(-1);
 }
 
 void Client::stop(){ close(sockfd);}

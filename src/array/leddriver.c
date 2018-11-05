@@ -48,7 +48,7 @@ void Array::shiftin(int * sdi,  int *rclk, int* srclk, int * inPattern, bool * p
 		*rclk = rclk_;
 		*srclk = srclk_;
 
-		std::cout << "inPattern: " << inPattern << " " << *inPattern << std::endl;
+		std::cout << "inPattern: " << *inPattern << std::endl;
 		for(int i=0;i<ARRAY_SIZE;i++) pattern[i] = (*inPattern & (LED_MASK >> i)) > 0;
 
 
