@@ -53,6 +53,12 @@ int main(int argc, char *argv[]) {
     std::string token;
     //------------------------
 
+  //  ofstream outlog;
+  //  outlog.open ("log.txt");
+
+    // later, use log as such:
+    //outlog << "Writing this to a file.\n";
+
     std::ifstream ifs(argv[3]);
     if (ifs) {
 
@@ -108,6 +114,8 @@ int main(int argc, char *argv[]) {
 
 
    }
+
+//  outlog.close();
 
   delete myBoard;
 
