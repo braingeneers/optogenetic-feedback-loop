@@ -52,25 +52,25 @@ void Server::send(Message* msg){
     if (n < 0) exit(-1);
 }
 
+void Client::send(Message* msg){
+    n = sendto(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, len);
+    if (n < 0) exit(-1);
+}
+
+
 void Server::recieve(Message* msg) {
     n = recvfrom(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, &len);
     if (n < 0) exit(-1);
-
 }
-void Server::stop(){ close(sockfd);}
 
 void Client::recieve(Message* msg){
     n = recvfrom(sockfd, msg, sizeof(*msg), 0,(struct sockaddr *)&remote_addr, &len);
     if (n < 0) exit(-1);
 }
 
-void Client::send(Message* msg){
-    n = sendto(sockfd, msg, sizeof(*msg), 0, (struct sockaddr *)&remote_addr, len);
-    if (n < 0) exit(-1);
-}
 
 void Client::stop(){ close(sockfd);}
-
+void Server::stop(){ close(sockfd);}
 
 /*void Client::runClient(char * argv1, char* argv2, char * argv3){
    start(argv1, argv2);

@@ -33,6 +33,16 @@ using namespace std;
 #define USAGE "USAGE %s port command-file\n"
 //Example: sudo ./master 5001 command.txt
 
+
+std::string asString(const std::chrono::system_clock::time_point& tp){
+    // convert to system time:
+    std::time_t t = std::chrono::system_clock::to_time_t(tp);
+    std::string ts = std::ctime(&t);// convert to calendar time
+    ts.resize(ts.size()-1); // skip trailing newline
+    return ts;
+}
+
+
 int main(int argc, char *argv[]) {
 
     if (argc < 3) { printf(USAGE, argv[0]); return -1; }
@@ -54,16 +64,17 @@ int main(int argc, char *argv[]) {
     myBoard->addArray(SDI, RCLK, SRCLK);
     int pattern;
     int arraySel;
+    int boardSel = 0;
     int last;
     std::string line;
     std::string token;
+    std::chrono::system_clock::time_point tp;
     //------------------------
 
-  //  ofstream outlog;
-  //  outlog.open ("log.txt");
+    ofstream outlog;
+    outlog.open ("log.txt");
 
     // later, use log as such:
-    //outlog << "Writing this to a file.\n";
 
     std::ifstream ifs(argv[2]);
     if (ifs) {
@@ -108,6 +119,8 @@ int main(int argc, char *argv[]) {
           // }
 
           myServer->send(&msg);
+          tp = std::chrono::system_clock::now();
+          outlog <<  asString(tp) << "    " << "Board: " << boardSel << "   " << "Array: " << arraySel << "   " << "Pattern: " << pattern << endl;
           bzero(msg.pattern, ARRAY_SIZE);
           myServer->recieve(&msg);
           cout << "Recieved: ";
@@ -121,7 +134,7 @@ int main(int argc, char *argv[]) {
      }
 
 
-//  outlog.close();
+  outlog.close();
 
   delete myBoard;
 
