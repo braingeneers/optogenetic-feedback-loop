@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     std::ifstream ifs(argv[2]);
     if (ifs) {
 
-     while (1){//std::getline(ifs, line)) {
+     while (std::getline(ifs, line)) {
           //  bzero(msg.pattern, ARRAY_SIZE);   //  memset(msg.pattern, false, ARRAY_SIZE);
           //for(bool b : msg.pattern) b = true;
 
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
           cout << "Last Message? 0==No, 1==Yes" << endl;
           cin >> last;*/
 
-/*          if (!line.empty()){
+         if (!line.empty()){
             //format: pattern array last
               std::stringstream stream(line);
               last = 0;
@@ -95,11 +95,11 @@ int main(int argc, char *argv[]) {
               if(stream >> token){
                   std::cout << "TOKEN IS: " <<token << '\n';
                   last = stoi(token);
-              }*/
+              }
 
-            arraySel=0;
+            /*arraySel=0;
             pattern = rand() & rand() & 0xFF;
-            last = 0;
+            last = 0;*/
 
           (myBoard->Arrays[arraySel])->shiftin(&(msg.sdi), &(msg.rclk), &(msg.srclk), &pattern, msg.pattern);
           msg.flag = last;
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
           if (msg.flag == LAST) break;
           delay(50);
 
-        // }
+         }
        }
      }
 
