@@ -16,7 +16,7 @@ using namespace std;
 int main(int argc, char *argv[]) {
 
   if (argc < 2) { printf(USAGE, argv[0]);  return -1;}
- 
+
   //initizlize I/O
   if(!bcm2835_init()) return 1;
   initPins();
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
   delete myServer;
 
   //Shut down I/0
-  bcm2835_close();
+  shutDown();
 
   return 0;
 

@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
     std::ifstream ifs(argv[3]);
     if (ifs) {
 
-        while (std::getline(ifs, line)) {
+     while (std::getline(ifs, line)) {
           //  bzero(msg.pattern, ARRAY_SIZE);   //  memset(msg.pattern, false, ARRAY_SIZE);
           //for(bool b : msg.pattern) b = true;
 
@@ -92,7 +92,9 @@ int main(int argc, char *argv[]) {
                   last = stoi(token);
               }
 
-
+            /*arraySel=0;
+            pattern = rand() & rand() & 0xFF;
+            last = 0;*/
 
           (myBoard->Arrays[arraySel])->shiftin(&(msg.sdi), &(msg.rclk), &(msg.srclk), &pattern, msg.pattern);
           msg.flag = last;
@@ -107,13 +109,12 @@ int main(int argc, char *argv[]) {
           for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
           cout << endl;
           if (msg.flag ==LAST) break;
-          delay(1000);
+          delay(50);
 
          }
        }
+     }
 
-
-   }
 
 //  outlog.close();
 

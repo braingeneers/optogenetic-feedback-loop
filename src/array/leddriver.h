@@ -17,24 +17,34 @@
 
 
 #define   SDI   16 //27   //serial data input
-#define   RCLK  20 //28   //memory clock input(STCP)
-#define   SRCLK 21 //29   //shift register clock input(SHCP)
+#define   RCLK  21 //28   //memory clock input(STCP)
+#define   SRCLK 20 //29   //shift register clock input(SHCP)
 
 #define   SDI_2   13 //27   //serial data input
 #define   RCLK_2  19 //28   //memory clock input(STCP)
 #define   SRCLK_2 26 //29   //shift register clock input(SHCP)
 
+//LED Indication
+#define   IND_SERVER_CONNECTION   17
+#define   IND_SERVER_MSG_RCV      4
+#define   IND_CLIENT_POWER        3
+#define   IND_CLIENT_MSG_SEND     2
+
 //unsigned char LED[8] = {0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
 #define ARRAY_SIZE 8 //leds per array
 #define LED_MASK 0x80
 #define STANDARD_DELAY 25 //ms
+#define LONG_DELAY 1000 //ms
 
 //int arraySize; //8 //leds per array
 //int ledMask; //0x80
 //int standardDelay;
+
 void pulse(int pin);
 void activate(int sdi, int rclk, int srclk, bool * pattern);
 void initPins();
+void shutDown();
+
 
 
 class Array {
@@ -42,6 +52,7 @@ class Array {
         int sdi_; //serial data input // 16
         int rclk_; //memory clock input (STCP) //20
         int srclk_;  //shift register clock input (SHCP) //21
+
 
       public:
         Array(int sdi, int rclk, int srclk); //Client * myClient);

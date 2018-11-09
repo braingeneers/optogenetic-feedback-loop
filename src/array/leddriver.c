@@ -8,16 +8,31 @@
 #include "leddriver.h"
 
 
-void initPins(){	//set  pins as outputs
 
-	int pins[] = {SDI, RCLK, SRCLK, SDI_2, RCLK_2, SRCLK_2};
+void initPins(){	//set  pins as outputs
+	int pins[] = {SDI, RCLK, SRCLK, SDI_2, RCLK_2, SRCLK_2, IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV, IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
+	int indPins[] = {IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV, IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
+
 	//initialize all pins to be outputs, initially low
 	for (int pin : pins){
 			bcm2835_gpio_fsel(pin, BCM2835_GPIO_FSEL_OUTP);
 			bcm2835_gpio_write(pin, LOW);
 	}
 
+	//flash indication leds to ensure they work
+	for (int indPin : indPins){ bcm2835_gpio_write(indPin, HIGH);}
+	delay(LONG_DELAY);
+	for (int indPin : indPins){ bcm2835_gpio_write(indPin, LOW);}
+
+	//turn power indication LED on
+	bcm2835_gpio_write(IND_CLIENT_POWER, HIGH);
+
 }
+
+void shutDown(){
+	  bcm2835_close();
+}
+
 
 void pulse(int pin){
 		bcm2835_gpio_write(pin, LOW);
