@@ -42,9 +42,17 @@
 
 void pulse(int pin);
 void activate(int sdi, int rclk, int srclk, bool * pattern);
-void initPins();
-void shutDown();
 
+void initPins();
+void shutDownPins();
+
+void statusConnected();
+
+void statusPreSendMsg();
+void statusSentMsg();
+
+void statusAwaitingMsg();
+void statusRecievedMsg();
 
 
 class Array {

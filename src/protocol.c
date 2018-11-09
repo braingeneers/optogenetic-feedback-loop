@@ -10,8 +10,8 @@
 #include "protocol.h"
 
 
-void Server::start(char * argv1){
-    port = atoi(argv1);
+void Server::start(char * inPort){
+    port = atoi(inPort);
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) exit(-1);
@@ -28,13 +28,13 @@ void Server::start(char * argv1){
 }
 
 
-void Client::start(char * argv1, char* argv2){
-      port = atoi(argv2);
+void Client::start(char * inHost, char* inPort){
+      port = atoi(inPort);
 
       sockfd = socket(AF_INET, SOCK_DGRAM, 0);
       if (sockfd < 0) exit(-1);
 
-      server = gethostbyname(argv1);
+      server = gethostbyname(inHost);
       if (server == NULL) exit(-1);
 
      bzero((char *) &remote_addr, sizeof(remote_addr));

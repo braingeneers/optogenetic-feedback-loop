@@ -10,6 +10,7 @@
 
 
 void initPins(){	//set  pins as outputs
+	if(!bcm2835_init()) exit(1);
 	int pins[] = {SDI, RCLK, SRCLK, SDI_2, RCLK_2, SRCLK_2, IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV, IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
 	int indPins[] = {IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV, IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
 
@@ -29,9 +30,16 @@ void initPins(){	//set  pins as outputs
 
 }
 
-void shutDown(){
-	  bcm2835_close();
-}
+void shutDownPins(){ bcm2835_close(); }
+
+void statusConnected(){	bcm2835_gpio_write(IND_SERVER_CONNECTION, HIGH); }
+
+void statusPreSendMsg(){bcm2835_gpio_write(IND_CLIENT_MSG_SEND, HIGH); }
+void statusSentMsg(){bcm2835_gpio_write(IND_CLIENT_MSG_SEND, LOW); }
+
+void statusAwaitingMsg(){bcm2835_gpio_write(IND_SERVER_MSG_RCV, LOW); }
+void statusRecievedMsg(){bcm2835_gpio_write(IND_SERVER_MSG_RCV, HIGH); }
+
 
 
 void pulse(int pin){

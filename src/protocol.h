@@ -25,8 +25,11 @@
 
 using namespace std;
 
-#define NONE 0
-#define LAST 1
+#define NONE      0
+#define LAST      1
+#define ANNOUNCE  2
+#define ACCEPT    3
+#define ACK       4
 
 /*
  * On-wire datagram.
@@ -56,7 +59,7 @@ class Server {
 
       public:
       //  void runServer(char* argv1);
-        void start(char * argv1);
+        void start(char * inPort);
         void send(Message * msg);
         void recieve(Message* msg);
         void stop();
@@ -75,7 +78,7 @@ class Client{
 
     public:
     //  void runClient(char * argv1, char* argv2, char * argv3);
-      void start(char * argv1, char* argv2);
+      void start(char * inHost, char* inPort);
       void send(Message* msg);
       void recieve(Message* msg);
       void stop();

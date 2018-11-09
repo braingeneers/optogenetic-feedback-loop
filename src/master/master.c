@@ -30,25 +30,31 @@
 #include "../array/leddriver.c"
 using namespace std;
 
-#define USAGE "USAGE %s host port command-file\n"
-
+#define USAGE "USAGE %s port command-file\n"
+//Example: sudo ./master 5001 command.txt
 
 int main(int argc, char *argv[]) {
 
     if (argc < 3) { printf(USAGE, argv[0]); return -1; }
-    std::cout << "Command file: " << argv[1] << std::endl;
+    std::cout << "Command file: " << argv[2] << std::endl;
 
-    Client* myClient = new Client();
-    myClient->start(argv[1], argv[2]);
+    //initialize Client
+    Server* myServer = new Server();
+    myServer->start(argv[1]);
+
+
+    //Register Boards
+    Message msg;
+    myServer->recieve(&msg);
+    msg.flag = ACCEPT;
+    myServer->send(&msg);
 
     //------------------------
-    Board* myBoard = new Board(2);
+    Board* myBoard = new Board(1);
     myBoard->addArray(SDI, RCLK, SRCLK);
-    myBoard->addArray(SDI_2, RCLK_2, SRCLK_2);
-    int  pattern;
+    int pattern;
     int arraySel;
     int last;
-    Message msg;
     std::string line;
     std::string token;
     //------------------------
@@ -59,10 +65,10 @@ int main(int argc, char *argv[]) {
     // later, use log as such:
     //outlog << "Writing this to a file.\n";
 
-    std::ifstream ifs(argv[3]);
+    std::ifstream ifs(argv[2]);
     if (ifs) {
 
-     while (std::getline(ifs, line)) {
+     while (1){//std::getline(ifs, line)) {
           //  bzero(msg.pattern, ARRAY_SIZE);   //  memset(msg.pattern, false, ARRAY_SIZE);
           //for(bool b : msg.pattern) b = true;
 
@@ -73,14 +79,13 @@ int main(int argc, char *argv[]) {
           cout << "Last Message? 0==No, 1==Yes" << endl;
           cin >> last;*/
 
-          if (!line.empty()){
+/*          if (!line.empty()){
             //format: pattern array last
               std::stringstream stream(line);
               last = 0;
               stream >> token;
               if (token.find("#") == 0 || token == "\n" || token == " "){ //break;
-                  cout << "!!!!!!!!" << endl;
-                  continue;
+                    continue;
               }
               std::cout << "TOKEN IS: " << token << '\n';
               pattern = stoi(token);
@@ -90,11 +95,11 @@ int main(int argc, char *argv[]) {
               if(stream >> token){
                   std::cout << "TOKEN IS: " <<token << '\n';
                   last = stoi(token);
-              }
+              }*/
 
-            /*arraySel=0;
+            arraySel=0;
             pattern = rand() & rand() & 0xFF;
-            last = 0;*/
+            last = 0;
 
           (myBoard->Arrays[arraySel])->shiftin(&(msg.sdi), &(msg.rclk), &(msg.srclk), &pattern, msg.pattern);
           msg.flag = last;
@@ -102,16 +107,16 @@ int main(int argc, char *argv[]) {
           //    ledArray->shiftin(msg.pattern);
           // }
 
-          myClient->send(&msg);
+          myServer->send(&msg);
           bzero(msg.pattern, ARRAY_SIZE);
-          myClient->recieve(&msg);
+          myServer->recieve(&msg);
           cout << "Recieved: ";
           for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
           cout << endl;
-          if (msg.flag ==LAST) break;
+          if (msg.flag == LAST) break;
           delay(50);
 
-         }
+        // }
        }
      }
 
@@ -120,8 +125,8 @@ int main(int argc, char *argv[]) {
 
   delete myBoard;
 
-  myClient->stop();
-  delete myClient;
+  myServer->stop();
+  delete myServer;
 
   return 0;
 
