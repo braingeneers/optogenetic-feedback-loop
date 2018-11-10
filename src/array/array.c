@@ -13,6 +13,22 @@ using namespace std;
 #define USAGE "USAGE %s host port\n"
 //Example: sudo ./array localhost 5001
 
+sem_t announceExit;
+
+void announce(Message msg, Client myClient){
+  int sval;
+  for(;;){
+    statusPreSendMsg();
+    myClient.send(&msg);
+    statusSentMsg();
+  //  for(int i=0; i==99999999; i++){}//
+    delay(1000);
+    if(!sem_getvalue(&announceExit, &sval)) cout << "sval: " << sval << endl;
+    else exit(-1);
+    if (sval == 1) return;
+  }
+}
+
 int main(int argc, char *argv[]) {
 
   if (argc < 2) { printf(USAGE, argv[0]);  return -1;}
@@ -26,17 +42,36 @@ int main(int argc, char *argv[]) {
 
   //Announce your resrouce to Server
   Message msg;
-  do {
-    msg.flag = ANNOUNCE;
-    statusPreSendMsg();
-    myClient->send(&msg);
-    statusSentMsg();
+  msg.flag = ANNOUNCE;
+  cout << "Thread\n";
+
+
+  sem_init(&announceExit, 0, 1);
+  sem_wait(&announceExit);
+  std::thread t (announce, msg, *myClient);
+  cout << "After thread\n";
+  Message rcvmsg;
+
+
+  do{
     statusAwaitingMsg();
-    myClient->recieve(&msg);
-    statusRecievedMsg();
-  } while (msg.flag != ACCEPT);
+    cout << "Recieving\n";
+    myClient->recieve(&rcvmsg);
+  } while (rcvmsg.flag != ACCEPT);
+
+  sem_post(&announceExit);
+  cout << "Recieved, accepted\n";
+
+
+  if(t.joinable()) t.join();
+  sem_destroy(&announceExit);
+
+  cout << "Joined\n";
+
+  statusRecievedMsg();
 
   statusConnected();
+  cout << "Accepted!\n";
 
   //Array control
   int exit = 0;

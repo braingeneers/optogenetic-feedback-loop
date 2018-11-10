@@ -59,6 +59,8 @@ int main(int argc, char *argv[]) {
     msg.flag = ACCEPT;
     myServer->send(&msg);
 
+    cout << "Accepted!\n";
+
     //------------------------
     Board* myBoard = new Board(1);
     myBoard->addArray(SDI, RCLK, SRCLK);
@@ -116,16 +118,18 @@ int main(int argc, char *argv[]) {
           msg.flag = last;
           // for(Array* ledArray : myBoard->Arrays){
           //    ledArray->shiftin(msg.pattern);
-          // }
+          // } 
 
           myServer->send(&msg);
           tp = std::chrono::system_clock::now();
           outlog <<  asString(tp) << "    " << "Board: " << boardSel << "   " << "Array: " << arraySel << "   " << "Pattern: " << pattern << endl;
           bzero(msg.pattern, ARRAY_SIZE);
-          myServer->recieve(&msg);
+          //do{
+            myServer->recieve(&msg);
+        //  } while (msg.flag != ACK)
           cout << "Recieved: ";
           for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
-          cout << endl;
+          cout << "Flag: " << msg.flag << endl;
           if (msg.flag == LAST) break;
           delay(50);
 

@@ -16,6 +16,9 @@
 #include <vector>
 #include <chrono>
 #include <ctime>
+#include <thread>
+#include <mutex>
+#include <semaphore.h>
 
 
 #define   SDI   16 //27   //serial data input
@@ -55,6 +58,7 @@ void statusSentMsg();
 
 void statusAwaitingMsg();
 void statusRecievedMsg();
+
 
 
 class Array {

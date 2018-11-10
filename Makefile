@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Isrc -lbcm2835 -g #-lwiringPi
+CFLAGS = -Wall -Isrc -lbcm2835 -lpthread -g #-lwiringPi
 CC = g++ -std=c++17
 #CCN = gcc -std=c99
 #CNFLAGS = -Wall -lbcm2835 #-lwiringPi
