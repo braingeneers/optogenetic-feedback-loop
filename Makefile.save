@@ -5,11 +5,10 @@ CC = g++ -std=c++17
 
 ARRAY_SRC=$(wildcard src/array/*.c /src/protocol.h)
 MASTER_SRC=$(wildcard src/master/*.c /src/protocol.h /src/array/leddriver.h)
-ORGANOID_SRC=$(wildcard src/organoid/*.c /src/protocol.h)
-ORGANOIDMAST_SRC=$(wildcard src/organoidmaster/*.c /src/protocol.h)
+SUPERVISOR_SRC=$(wildcard src/supervisor/*.c /src/protocol.h)
 
 
-all: array master organoid organoidmast
+all: array master
 
 
 array: $(ARRAY_SRC)
@@ -19,11 +18,11 @@ array: $(ARRAY_SRC)
 master: $(MASTER_SRC)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-organoid: $(ORGANOID_SRC)
-	$(CC) -o $@ $^ $(CFLAGS)
+supervisor: $_SRC)
+        $(CC) -o $@ $^ $(CFLAGS)
 
-organoidmast: $(ORGANOIDMAST_SRC)
-		$(CC) -o $@ $^ $(CFLAGS)
+
 
 clean:
-	@rm array master organoid organoidmast
+	@rm array master
+
