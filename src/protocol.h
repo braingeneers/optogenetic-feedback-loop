@@ -32,7 +32,7 @@ using namespace std;
 #define ACK       4
 
 
-#define BUFFER_SIZE 128   //TCP message buffer
+#define BUFFER_SIZE 1024   //TCP message buffer
 
 /*
  * UDP On-wire datagram.

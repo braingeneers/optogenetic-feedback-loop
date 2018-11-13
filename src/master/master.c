@@ -30,9 +30,8 @@
 #include "../array/leddriver.c"
 using namespace std;
 
-#define USAGE "USAGE %s port command-file\n"
-//Example: sudo ./master 5001 command.txt
-
+#define USAGE "USAGE %s listening-port organoid-host organoid-port\n"
+//Example: sudo ./master 5001 localhost 5002
 
 std::string asString(const std::chrono::system_clock::time_point& tp){
     // convert to system time:
@@ -43,12 +42,18 @@ std::string asString(const std::chrono::system_clock::time_point& tp){
 }
 
 
+
+
 int main(int argc, char *argv[]) {
 
     if (argc < 3) { printf(USAGE, argv[0]); return -1; }
-    std::cout << "Command file: " << argv[2] << std::endl;
 
-    //initialize Client
+    //initialize Organoid Client
+    TCPClient* myTCPClient = new TCPClient();
+    myTCPClient->start(argv[2], argv[3]);
+    char buffer[BUFFER_SIZE];
+
+    //initialize Array Board Server
     Server* myServer = new Server();
     myServer->start(argv[1]);
 
@@ -64,10 +69,8 @@ int main(int argc, char *argv[]) {
     //------------------------
     Board* myBoard = new Board(1);
     myBoard->addArray(SDI, RCLK, SRCLK);
-    int pattern;
-    int arraySel;
+    int pattern, arraySel, last;
     int boardSel = 0;
-    int last;
     std::string line;
     std::string token;
     std::chrono::system_clock::time_point tp;
@@ -76,49 +79,34 @@ int main(int argc, char *argv[]) {
     ofstream outlog;
     outlog.open ("log.txt");
 
-    // later, use log as such:
 
-    std::ifstream ifs(argv[2]);
-    if (ifs) {
+    while(1){
 
-     while (std::getline(ifs, line)) {
-          //  bzero(msg.pattern, ARRAY_SIZE);   //  memset(msg.pattern, false, ARRAY_SIZE);
-          //for(bool b : msg.pattern) b = true;
-
-        /*  cout <<  "What array configuration?" << endl;
-          cin >> pattern;
-          cout << "Which array? 0 or 1" << endl;
-          cin >> arraySel;
-          cout << "Last Message? 0==No, 1==Yes" << endl;
-          cin >> last;*/
-
-         if (!line.empty()){
-            //format: pattern array last
-              std::stringstream stream(line);
-              last = 0;
-              stream >> token;
-              if (token.find("#") == 0 || token == "\n" || token == " "){ //break;
-                    continue;
-              }
-              std::cout << "TOKEN IS: " << token << '\n';
-              pattern = stoi(token);
-              stream >> token;
-              std::cout << "TOKEN IS: " <<token << '\n';
-              arraySel = stoi(token);
-              if(stream >> token){
-                  std::cout << "TOKEN IS: " <<token << '\n';
-                  last = stoi(token);
-              }
-
-            /*arraySel=0;
+            arraySel=0;
             pattern = rand() & rand() & 0xFF;
-            last = 0;*/
+            last = 0;
+
+//---------------communicate with organoid ---------------
+            buffer = tostring(pattern);
+
+            snprintf(buffer, BUFFER_SIZE, "%d", pattern);
+            myTCPClient->send(argv[3]); //pattern as char string
+
+
+             bzero(buffer, BUFFER_SIZE);
+
+             myTCPClient->recieve(buffer);
+             printf("Received from organoid: %s\n", buffer);
+             //can now acess JPEG
+
+//---------------communicate with organoid ---------------
+
 
           (myBoard->Arrays[arraySel])->shiftin(&(msg.sdi), &(msg.rclk), &(msg.srclk), &pattern, msg.pattern);
           msg.flag = last;
           // for(Array* ledArray : myBoard->Arrays){
           //    ledArray->shiftin(msg.pattern);
-          // } 
+          // }
 
           myServer->send(&msg);
           tp = std::chrono::system_clock::now();
@@ -133,9 +121,7 @@ int main(int argc, char *argv[]) {
           if (msg.flag == LAST) break;
           delay(50);
 
-         }
-       }
-     }
+  }
 
 
   outlog.close();
@@ -145,7 +131,9 @@ int main(int argc, char *argv[]) {
   myServer->stop();
   delete myServer;
 
-  return 0;
+  myTCPClient->stop();
+  delete myTCPClient;
 
+  return 0;
 
 }
