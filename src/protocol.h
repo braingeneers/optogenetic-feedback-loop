@@ -61,7 +61,7 @@ class Server {
         int n;
 
       public:
-      //  void runServer(char* argv1);
+        //void runServer(char* argv1);
         void start(char * inPort);
         void send(Message * msg);
         void recieve(Message* msg);
@@ -86,6 +86,7 @@ class Client{
       void recieve(Message* msg);
       void stop();
 };
+
 
 
 class TCPClient{

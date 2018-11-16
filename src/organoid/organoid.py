@@ -1,8 +1,10 @@
 #!/usr/bin/python
 
+
 import sys
 import numpy
 from PIL import Image
+#import spaeth
 
 #-----------------------------------------------
 import socket
@@ -36,6 +38,7 @@ def main():
 					c.send(input)
 
 					#Organoid Simulation
+					organoidInit()
 					organoid(seq_num, int(input))
 
 					seq_num+=1 #increment sequence number
@@ -45,6 +48,11 @@ def main():
 		#-----------------------------------------------
 		s.close() #close socket
 		#-----------------------------------------------
+
+
+def organoidInit():
+
+	return;
 
 
 def organoid(seq_num, input_pattern):

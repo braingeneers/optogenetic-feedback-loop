@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Isrc -lbcm2835 -lpthread -g #-lwiringPi
+CFLAGS = -Wall -Isrc -lbcm2835 -lpthread #-lwiringPi
 CC = g++ -std=c++17
 #CCN = gcc -std=c99
 #CNFLAGS = -Wall -lbcm2835 #-lwiringPi
@@ -9,7 +9,7 @@ ORGANOID_SRC=$(wildcard src/organoid/*.c /src/protocol.h)
 ORGANOIDMAST_SRC=$(wildcard src/organoidmaster/*.c /src/protocol.h)
 
 
-all: array master organoid organoidmast
+all: master organoid organoidmast #array
 
 
 array: $(ARRAY_SRC)

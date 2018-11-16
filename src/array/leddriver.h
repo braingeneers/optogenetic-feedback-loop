@@ -69,12 +69,17 @@ class Array {
 
 
       public:
-        Array(int sdi, int rclk, int srclk); //Client * myClient);
-
+        Array(int sdi, int rclk, int srclk){
+                std::cout <<  "Initializing Array!!" << std::endl;
+        				this->sdi_ = sdi; this->rclk_ = rclk; this->srclk_ = srclk;}; //Client * myClient);
         int rclk(void) {return rclk_;};
         int sdi(void) {return sdi_;};
         int srclk(void) {return srclk_;};
-        void shiftin(int * sdi,  int *rclk, int* srclk, int * inPattern, bool * pattern);
+        void shiftin(int * sdi,  int *rclk, int* srclk, int * inPattern, bool * pattern){{
+        		*sdi = sdi_; *rclk = rclk_; *srclk = srclk_;
+        		std::cout << "inPattern: " << *inPattern << std::endl;
+        		for(int i=0;i<ARRAY_SIZE;i++) pattern[i] = (*inPattern & (LED_MASK >> i)) > 0;
+        }};
 };
 
 
@@ -88,7 +93,7 @@ class Board {
           std::vector<Array*> Arrays;
           Board(int numArrays){ numArrays_=numArrays; }; //arraySize, ledMask
           ~Board(){ for(Array* ledArray: Arrays) delete ledArray; };
-          void addArray(int sdi, int rclk, int srclk);
+          void addArray(int sdi, int rclk, int srclk) {Arrays.push_back(new Array(sdi, rclk, srclk));};
           int numArrays() {return numArrays_;};
 
 };

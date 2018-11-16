@@ -25,9 +25,9 @@
 #include <netdb.h>
 
 #include "../protocol.h"
-#include "../protocol.c"
+//#include "../protocol.c"
 #include "../array/leddriver.h"
-#include "../array/leddriver.c"
+//#include "../array/leddriver.c"
 using namespace std;
 
 #define USAGE "USAGE %s listening-port organoid-host organoid-port\n"
@@ -87,10 +87,8 @@ int main(int argc, char *argv[]) {
             last = 0;
 
 //---------------communicate with organoid ---------------
-            buffer = tostring(pattern);
-
             snprintf(buffer, BUFFER_SIZE, "%d", pattern);
-            myTCPClient->send(argv[3]); //pattern as char string
+            myTCPClient->send(buffer); //pattern as char string
 
 
              bzero(buffer, BUFFER_SIZE);
