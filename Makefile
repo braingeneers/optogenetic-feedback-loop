@@ -26,4 +26,4 @@ organoidmast: $(ORGANOIDMAST_SRC)
 		$(CC) -o $@ $^ $(CFLAGS)
 
 clean:
-	@rm array master organoid organoidmast
+	@rm master organoid organoidmast #array

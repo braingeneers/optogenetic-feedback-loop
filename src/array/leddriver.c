@@ -6,10 +6,12 @@
 //-----------------------------------------------------------------------------
 
 #include "leddriver.h"
-#include <bcm2835.h>
 
-const int pins[] = {SDI, RCLK, SRCLK, SDI_2, RCLK_2, SRCLK_2, IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV, IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
-const int indPins[] = {IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV, IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
+const int pins[] = {SDI, RCLK, SRCLK, SDI_2, RCLK_2, SRCLK_2,
+										IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV,
+										IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
+const int indPins[] = {IND_SERVER_CONNECTION, IND_SERVER_MSG_RCV,
+	 										 IND_CLIENT_POWER, IND_CLIENT_MSG_SEND};
 
 void initPins(){	//set  pins as outputs
 	if(!bcm2835_init()) exit(1);

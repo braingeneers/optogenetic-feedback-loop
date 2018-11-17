@@ -21,7 +21,7 @@
 #include <netdb.h>
 
 #include <functional>
-#include "array/leddriver.h"
+#include "hardware.h"
 
 using namespace std;
 

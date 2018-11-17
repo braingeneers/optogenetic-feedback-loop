@@ -26,7 +26,8 @@
 
 #include "../protocol.h"
 //#include "../protocol.c"
-#include "../array/leddriver.h"
+#include "../hardware.h"
+#include "../hardware.c"
 //#include "../array/leddriver.c"
 using namespace std;
 
@@ -117,7 +118,7 @@ int main(int argc, char *argv[]) {
           for(int i=0; i<ARRAY_SIZE;i++) cout << msg.pattern[i] << " ";
           cout << "Flag: " << msg.flag << endl;
           if (msg.flag == LAST) break;
-          delay(50);
+          sleep_for(50ms);
 
   }
 
