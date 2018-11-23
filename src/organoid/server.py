@@ -13,13 +13,21 @@ def main():
 		# connect to server
 		host_ip = socket.gethostbyname(str(sys.argv[1]))
 		s.connect((host_ip, port))
-
+		seq_num = 0
+		pattern = 0
 		while True:
+			
+#			if(seq_num%2==0 or seq_num == 41):
+#				pattern=0
+#			else:
+#				pattern=21 
 			# send 8 bit number
-			s.send(str(random.randint(0,255)))
+			s.send( #str(pattern)) #
+				str(random.randint(0,255)))
 			out = s.recv(128) # receive echo from client
 			print 'Recieved:', out
-			time.sleep(1)
+			#time.sleep(1)
+			seq_num+=1
 
 		#-----------------------------------------------
 		s.close() #close socket
